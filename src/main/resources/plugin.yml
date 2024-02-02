@@ -1,0 +1,7 @@
+name: Wands
+version: '${version}'
+main: lol.hub.wands.Plugin
+api-version: '1.20'
+authors: [ nothub ]
+description: Utility wands without client mods.
+website: https://github.com/nothub/Wands

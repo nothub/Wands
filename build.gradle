@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'xyz.jpenilla.run-paper' version '2.2.2'
+}
+
+group = 'lol.hub'
+version = '0.1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = "https://repo.papermc.io/repository/maven-public/"
+        content {
+            includeGroup 'io.papermc.paper'
+            includeGroup 'net.kyori'
+            includeGroup 'net.md-5'
+        }
+    }
+}
+
+dependencies {
+    compileOnly group: 'io.papermc.paper', name: 'paper-api', version: "${project.mc_version}-R0.1-SNAPSHOT"
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+tasks.withType(JavaCompile).configureEach {
+    it.sourceCompatibility = it.targetCompatibility = JavaVersion.toVersion(17)
+    it.options.release = 17
+    it.options.encoding = 'UTF-8'
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+tasks.register('acceptEula') {
+    doLast {
+        def f = file('run/eula.txt')
+        f.parentFile.mkdirs()
+        f.text = 'eula=true'
+    }
+}
+
+tasks {
+    runServer {
+        minecraftVersion(project.mc_version)
+        dependsOn('acceptEula')
+    }
+}
