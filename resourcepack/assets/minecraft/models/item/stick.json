@@ -1,0 +1,18 @@
+{
+  "parent": "item/handheld",
+  "textures": { "layer0": "item/stick" },
+  "overrides": [
+    {
+      "predicate": { "custom_model_data": 1 },
+      "model": "item/wands/void"
+    },
+    {
+      "predicate": { "custom_model_data": 2 },
+      "model": "item/wands/torch"
+    },
+    {
+      "predicate": { "custom_model_data": 99 },
+      "model": "item/wands/chicken"
+    }
+  ]
+}
