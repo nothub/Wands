@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public enum Wand {
 
-    VOID(1), TORCH(2), CHICKEN(99);
+    VOID(1), LIGHT(2), CHICKEN(99);
 
     public final int id;
 
