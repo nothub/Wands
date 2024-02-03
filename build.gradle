@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly group: 'io.papermc.paper', name: 'paper-api', version: "${project.mc_version}-R0.1-SNAPSHOT"
+    compileOnly group: 'io.papermc.paper', name: 'paper-api', version: "${project.minecraft_version}-R0.1-SNAPSHOT"
 }
 
 java {
@@ -40,17 +40,24 @@ processResources {
     }
 }
 
-tasks.register('acceptEula') {
-    doLast {
-        def f = file('run/eula.txt')
-        f.parentFile.mkdirs()
-        f.text = 'eula=true'
-    }
+tasks.register('resourcepack', Zip) {
+    from(layout.projectDirectory.dir('resourcepack'))
+    destinationDirectory = layout.buildDirectory.dir('resourcepack')
+    archiveFileName = 'wands.zip'
+}
+tasks.named("build") { finalizedBy("resourcepack") }
+
+tasks.register('serverTemplate', Copy) {
+    from 'server-template'
+    into 'server'
+    include '**/*'
 }
 
 tasks {
     runServer {
-        minecraftVersion(project.mc_version)
-        dependsOn('acceptEula')
+        runDirectory = layout.projectDirectory.dir("server")
+        minecraftVersion(project.minecraft_version)
+        dependsOn('serverTemplate')
+        systemProperty("com.mojang.eula.agree", "true")
     }
 }
