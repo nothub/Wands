@@ -4,12 +4,12 @@ plugins {
 }
 
 group = 'lol.hub'
-version = '0.1.0-SNAPSHOT'
+version = '0.1.0-INDEV'
 
 repositories {
     mavenCentral()
     maven {
-        url = "https://repo.papermc.io/repository/maven-public/"
+        url = 'https://repo.papermc.io/repository/maven-public/'
         content {
             includeGroup 'io.papermc.paper'
             includeGroup 'net.kyori'
@@ -40,24 +40,27 @@ processResources {
     }
 }
 
-tasks.register('resourcepack', Zip) {
-    from(layout.projectDirectory.dir('resourcepack'))
-    destinationDirectory = layout.buildDirectory.dir('resourcepack')
-    archiveFileName = 'wands.zip'
+def artifactName(String type, String fileExt) {
+    return "${project.name.toLowerCase()}-${project.version}+${project.minecraft_version}-${type}.${fileExt}"
 }
-tasks.named("build") { finalizedBy("resourcepack") }
 
-tasks.register('serverTemplate', Copy) {
-    from 'server-template'
-    into 'server'
-    include '**/*'
+jar.archiveFileName.set(artifactName('paper', 'jar'))
+jar.destinationDirectory.set(layout.buildDirectory.dir('dist'))
+
+tasks.register('resourcePack', Zip) {
+    archiveFileName.set(artifactName('respack', 'zip'))
+    from(layout.projectDirectory.dir('resourcepack')) {
+        excludes = ['*.xcf']
+    }
+    destinationDirectory = layout.buildDirectory.dir('dist')
 }
+tasks.named('build') { finalizedBy('resourcePack') }
 
 tasks {
     runServer {
-        runDirectory = layout.projectDirectory.dir("server")
+        runDirectory = layout.projectDirectory.dir('server')
         minecraftVersion(project.minecraft_version)
-        dependsOn('serverTemplate')
-        systemProperty("com.mojang.eula.agree", "true")
+        dependsOn('build')
+        systemProperty('com.mojang.eula.agree', 'true')
     }
 }
