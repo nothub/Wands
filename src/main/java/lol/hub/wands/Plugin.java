@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -37,17 +38,30 @@ public final class Plugin extends JavaPlugin {
             return true;
         });
 
-        getCommand("wand").setTabCompleter((sender, command, label, args) -> switch (args.length) {
+        getCommand("wand").setTabCompleter((sender, command, label, args) ->
+            switch (args.length) {
             case 1 ->
-                    Arrays.stream(Wand.values()).map(wand -> wand.name().toLowerCase(Locale.ROOT)).toList();
+                    Arrays.stream(Wand.values())
+                            .map(wand -> wand.name().toLowerCase(Locale.ROOT))
+                            .toList();
             default -> Collections.emptyList();
         });
 
 
         getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler(ignoreCancelled = true)
+            public void onPlayerJoin(PlayerJoinEvent ev) {
+                var url = String.format(
+                        "https://github.com/nothub/Wands/releases/download/v%s/wands-%s+%s-respack.jar",
+                        getPluginMeta().getVersion(),
+                        getPluginMeta().getVersion(),
+                        getServer().getMinecraftVersion()
+                );
+                ev.getPlayer().setResourcePack(url);
+            }
+            @EventHandler(ignoreCancelled = true)
             public void onPlayerInteract(PlayerInteractEvent ev) {
-                ev.getItem();
+                // ev.getItem();
             }
         }, this);
 
