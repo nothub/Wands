@@ -8,7 +8,7 @@
     },
     {
       "predicate": { "custom_model_data": 2 },
-      "model": "item/wands/torch"
+      "model": "item/wands/light"
     },
     {
       "predicate": { "custom_model_data": 99 },
