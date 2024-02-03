@@ -47,7 +47,6 @@ public final class Plugin extends JavaPlugin {
             default -> Collections.emptyList();
         });
 
-
         getServer().getPluginManager().registerEvents(new Listener() {
 
             @EventHandler(ignoreCancelled = true)

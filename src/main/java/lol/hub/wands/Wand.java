@@ -1,10 +1,13 @@
 package lol.hub.wands;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+
+import static net.kyori.adventure.text.Component.text;
 
 public enum Wand {
 
@@ -23,9 +26,10 @@ public enum Wand {
     }
 
     public ItemStack newItem() {
-        ItemStack item = new ItemStack(Material.STICK);
-        var success = item.editMeta(meta -> meta.setCustomModelData(this.id));
-        if (!success) throw new IllegalStateException("DUMM");
+        var item = new ItemStack(Material.STICK);
+        item.editMeta(meta -> meta.displayName(text(String.format("%s Wand",
+                StringUtils.capitalize(this.name().toLowerCase())))));
+        item.editMeta(meta -> meta.setCustomModelData(this.id));
         return item;
     }
 
