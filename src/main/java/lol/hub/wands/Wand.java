@@ -2,10 +2,13 @@ package lol.hub.wands;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import static net.kyori.adventure.text.Component.text;
 
@@ -27,9 +30,16 @@ public enum Wand {
 
     public ItemStack newItem() {
         var item = new ItemStack(Material.STICK);
+
+        item.editMeta(meta -> meta.getPersistentDataContainer()
+                .set(Objects.requireNonNull(NamespacedKey.fromString("wands:type")),
+                        PersistentDataType.INTEGER , id));
+
         item.editMeta(meta -> meta.displayName(text(String.format("%s Wand",
                 StringUtils.capitalize(this.name().toLowerCase())))));
+
         item.editMeta(meta -> meta.setCustomModelData(this.id));
+
         return item;
     }
 
