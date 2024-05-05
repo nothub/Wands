@@ -32,11 +32,9 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
-        expand props
+    filteringCharset "UTF-8"
+    filesMatching("plugin.yml") {
+        filter { line -> line.replace("@mod_version@", project.version) }
     }
 }
 
@@ -47,6 +45,15 @@ def artifactName(String type, String fileExt) {
 jar.archiveFileName.set(artifactName('paper', 'jar'))
 jar.destinationDirectory.set(layout.buildDirectory.dir('dist'))
 
+tasks {
+    runServer {
+        runDirectory = layout.projectDirectory.dir('run')
+        minecraftVersion(project.minecraft_version)
+        dependsOn('build')
+        systemProperty('com.mojang.eula.agree', 'true')
+    }
+}
+
 tasks.register('resourcePack', Zip) {
     archiveFileName.set(artifactName('respack', 'zip'))
     from(layout.projectDirectory.dir('resourcepack')) {
@@ -55,12 +62,3 @@ tasks.register('resourcePack', Zip) {
     destinationDirectory = layout.buildDirectory.dir('dist')
 }
 tasks.named('build') { finalizedBy('resourcePack') }
-
-tasks {
-    runServer {
-        runDirectory = layout.projectDirectory.dir('server')
-        minecraftVersion(project.minecraft_version)
-        dependsOn('build')
-        systemProperty('com.mojang.eula.agree', 'true')
-    }
-}
