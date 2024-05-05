@@ -1,11 +1,17 @@
 name: Wands
-version: '${version}'
+version: '@mod_version@'
 main: lol.hub.wands.Plugin
 api-version: '1.20'
-authors: [ nothub ]
+author: nothub
 description: Utility wands without client mods
 website: https://github.com/nothub/Wands
 
 commands:
   wand:
-    usage: '/wand'
+    description: 'Give a wand'
+    usage: '/wand <type>'
+    permission: wands.toggle
+
+permissions:
+  wands.toggle:
+    default: true
