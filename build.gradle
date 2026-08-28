@@ -1,16 +1,17 @@
 plugins {
-    id 'java'
-    id 'xyz.jpenilla.run-paper' version '2.3.1'
+    id 'java-library'
+    id "xyz.jpenilla.run-paper" version "3.1.0"
 }
 
 group = 'lol.hub'
-version = '0.1.0-INDEV'
+version = project.plugin_version
 
 repositories {
     mavenCentral()
     maven {
         url = 'https://repo.papermc.io/repository/maven-public/'
         content {
+            includeGroup 'com.mojang'
             includeGroup 'io.papermc.paper'
             includeGroup 'net.kyori'
             includeGroup 'net.md-5'
@@ -19,22 +20,29 @@ repositories {
 }
 
 dependencies {
-    compileOnly group: 'io.papermc.paper', name: 'paper-api', version: "${project.minecraft_version}-R0.1-SNAPSHOT"
+    compileOnly group: 'io.papermc.paper', name: 'paper-api', version: "${project.minecraft_version}.build.+"
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(project.java_version)
 }
 tasks.withType(JavaCompile).configureEach {
-    it.sourceCompatibility = it.targetCompatibility = JavaVersion.toVersion(17)
-    it.options.release = 17
+    it.options.release = Integer.parseInt(project.java_version)
     it.options.encoding = 'UTF-8'
+}
+
+tasks {
+    runServer {
+        minecraftVersion("${project.minecraft_version}")
+        jvmArgs("-Dcom.mojang.eula.agree=true", "-DPaper.skipServerPropertiesComments=true")
+    }
 }
 
 processResources {
     filteringCharset "UTF-8"
     filesMatching("plugin.yml") {
         filter { line -> line.replace("@mod_version@", project.version) }
+        filter { line -> line.replace("@minecraft_version@", minecraft_version) }
     }
 }
 
@@ -44,15 +52,6 @@ def artifactName(String type, String fileExt) {
 
 jar.archiveFileName.set(artifactName('paper', 'jar'))
 jar.destinationDirectory.set(layout.buildDirectory.dir('dist'))
-
-tasks {
-    runServer {
-        runDirectory = layout.projectDirectory.dir('run')
-        minecraftVersion(project.minecraft_version)
-        dependsOn('build')
-        systemProperty('com.mojang.eula.agree', 'true')
-    }
-}
 
 tasks.register('resourcePack', Zip) {
     archiveFileName.set(artifactName('respack', 'zip'))
