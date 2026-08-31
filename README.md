@@ -1,6 +1,6 @@
 # 🪄 Wands
 
-Utility wands without client mods
+Paper plugin. Utility wands without client mods
 
 ---
 
