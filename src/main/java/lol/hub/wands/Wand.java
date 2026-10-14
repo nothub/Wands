@@ -8,6 +8,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Objects;
 
 import static net.kyori.adventure.text.Component.text;
@@ -38,7 +39,7 @@ public enum Wand {
         item.editMeta(meta -> meta.displayName(text(String.format("%s Wand",
                 StringUtils.capitalize(this.name().toLowerCase())))));
 
-        item.editMeta(meta -> meta.setCustomModelData(this.id));
+        item.editMeta(meta -> meta.setItemModel(new NamespacedKey("wands", name().toLowerCase(Locale.ROOT))));
 
         return item;
     }
