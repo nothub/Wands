@@ -60,7 +60,7 @@ jar.destinationDirectory.set(layout.buildDirectory.dir('dist'))
 tasks.register('resourcePack', Zip) {
     archiveFileName.set(artifactName('respack', 'zip'))
     from(layout.projectDirectory.dir('resourcepack')) {
-        excludes = ['*.xcf']
+        excludes = ['**/*.xcf']
     }
     destinationDirectory = layout.buildDirectory.dir('dist')
 }
