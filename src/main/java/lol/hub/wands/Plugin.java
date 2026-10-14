@@ -57,7 +57,7 @@ public final class Plugin extends JavaPlugin {
                         getPluginMeta().getVersion(),
                         getServer().getMinecraftVersion()
                 );
-                ev.getPlayer().setResourcePack(url);
+                ev.getPlayer().setResourcePack(url, "");
             }
 
             @EventHandler(ignoreCancelled = true)
