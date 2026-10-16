@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class WandTest {
 
     @ParameterizedTest
-    @CsvSource({"void, 1", "light, 2", "chicken, 99"})
-    void wandCommandGivesTheWand(String type, int id, TestServer server, Area area) {
+    @CsvSource({"void, 1, Void Wand", "light, 2, Light Wand", "chicken, 99, Chicken Wand"})
+    void wandCommandGivesTheWand(String type, int id, String displayName, TestServer server, Area area) {
         Bot bot = area.bot();
 
         assertTrue(bot.run("wand " + type), "wand command");
@@ -29,6 +29,8 @@ class WandTest {
         // The item query reports no custom data, so the wand type is checked by vanilla's item predicate.
         String stickWithType = "minecraft:stick[custom_data={PublicBukkitValues:{\"wands:type\":" + id + "}}]";
         assertEquals(1, server.check("if items entity " + bot.name() + " container.* " + stickWithType).count(), "sticks with wands:type " + id);
+        String stickWithName = "minecraft:stick[custom_name=\"" + displayName + "\"]";
+        assertEquals(1, server.check("if items entity " + bot.name() + " container.* " + stickWithName).count(), "sticks named " + displayName);
     }
 
     @Test

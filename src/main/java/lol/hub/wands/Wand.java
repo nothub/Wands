@@ -37,7 +37,7 @@ public enum Wand {
                         PersistentDataType.INTEGER , id));
 
         item.editMeta(meta -> meta.displayName(text(String.format("%s Wand",
-                StringUtils.capitalize(this.name().toLowerCase())))));
+                StringUtils.capitalize(this.name().toLowerCase(Locale.ROOT))))));
 
         item.editMeta(meta -> meta.setItemModel(new NamespacedKey("wands", name().toLowerCase(Locale.ROOT))));
 
