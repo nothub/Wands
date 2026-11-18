@@ -1,5 +1,6 @@
+.gradle/
+build/
+run/
 /.idea/
 /.vscode/
-/.gradle/
-/run/
-/build/
+/.claude/settings.local.json
