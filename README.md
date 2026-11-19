@@ -2,7 +2,7 @@
 
 Paper plugin. Utility wands without client mods.
 
-[GitHub](https://github.com/nothub/wands/releases)
+[![GitHub](https://img.shields.io/github/stars/nothub/wands)](https://github.com/nothub/wands)
 
 ---
 
