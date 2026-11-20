@@ -76,7 +76,7 @@ jar.archiveFileName.set(artifactName('paper', 'jar'))
 jar.destinationDirectory.set(layout.buildDirectory.dir('dist'))
 
 tasks.register('resourcePack', Zip) {
-    archiveFileName.set(artifactName('respack', 'zip'))
+    archiveFileName.set(artifactName('resourcepack', 'zip'))
     from(layout.projectDirectory.dir('resourcepack')) {
         excludes = ['**/*.xcf']
     }
